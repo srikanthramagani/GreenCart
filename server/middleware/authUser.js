@@ -3,12 +3,15 @@ import User from "../models/User.js";
 
 
 const authUser = async (req, res, next) => {
-    const { token } = req.cookies;
-    if (!token) {
-        return res.json({ success: false, message: 'not Authorized' });
-    }
     try {
+        const { token } = req.cookies;
+        
+        if (!token) {
+            return res.json({ success: false, message: 'Not Authorized' });
+        }
+        
         const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+        
         if (tokenDecode.id) {
             // Ensure req.body exists (important for GET requests)
             if (!req.body) {
@@ -16,13 +19,14 @@ const authUser = async (req, res, next) => {
             }
             req.body.userId = tokenDecode.id;
             req.userId = tokenDecode.id; // Also set directly on req
+            next();
         } else {
             return res.json({ success: false, message: 'Not Authorized' });
         }
-        next();
         
     } catch (error) {
-        return res.json({ success: false, message: error.message });
+        console.error("Auth error:", error.message);
+        return res.json({ success: false, message: 'Not Authorized' });
     }
 }
 

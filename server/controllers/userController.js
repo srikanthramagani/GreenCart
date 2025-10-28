@@ -74,7 +74,6 @@ export const login=async(req,res)=>{
 export const isAuth = async (req, res) => {
   try {
     const userId = req.body.userId; // Get from middleware (authUser sets req.body.userId)
-    console.log("User id from auth:", userId);
     
     const user = await User.findById(userId).select("-password");
     if (!user) {
@@ -83,7 +82,7 @@ export const isAuth = async (req, res) => {
 
     return res.json({ success: true, user });
   } catch (error) {
-    console.log(error.message);
+    console.error("isAuth error:", error.message);
     return res.json({ success: false, message: error.message });
   }
 };

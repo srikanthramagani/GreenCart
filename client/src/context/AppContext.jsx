@@ -39,7 +39,6 @@ export const AppContextProvider=({children})=>{
     const fetchUser = async () => {
         try {
             const { data } = await axios.get('/api/user/is-auth');
-            console.log("User response from /is-auth:", data);
 
             if (data.success) {
                 setUser(data.user);
@@ -49,7 +48,7 @@ export const AppContextProvider=({children})=>{
                 setCartItems({});
             }
         } catch (error) {
-            console.log("User fetch error:", error);
+            // Silently handle auth check failure (user not logged in)
             setUser(null);
             setCartItems({});
         }
