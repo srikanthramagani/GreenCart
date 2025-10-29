@@ -5,8 +5,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 // Configure axios defaults
+console.log("Environment VITE_BACKEND_URL:", import.meta.env.VITE_BACKEND_URL);
+console.log("All environment variables:", import.meta.env);
+
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+// Temporarily hardcode for development testing
+axios.defaults.baseURL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 // Add request interceptor for debugging
 axios.interceptors.request.use(
